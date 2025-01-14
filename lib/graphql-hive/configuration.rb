@@ -54,6 +54,7 @@ module GraphQLHive
     end
 
     def usage_reporter
+      # TODO: This shares usage reporters across threads. Ensure reporter is thread-safe.
       @usage_reporter ||= GraphQLHive::UsageReporter.new(
         buffer_size: buffer_size,
         client_info: client_info,

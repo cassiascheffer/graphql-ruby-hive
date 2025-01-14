@@ -6,6 +6,7 @@ module GraphQLHive
       @operations = operations
     end
 
+    # TODO: Refactor for performance. Use a thread-safe cache for the visitor results.
     def build
       @body ||= @operations.each_with_object(initialize_report) do |operation, report|
         errors = errors_from_results(operation.results)
