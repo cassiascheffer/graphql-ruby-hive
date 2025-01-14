@@ -17,8 +17,9 @@ require "graphql-hive/tracing"
 require "graphql-hive/trace"
 require "graphql"
 
+# TODO: Do not hook into Kernel#at_exit because it is not thread-safe
 at_exit do
-  GraphQLHive.configuration.usage_reporter.stop
+  GraphQLHive.configuration&.usage_reporter&.stop
 end
 
 module GraphQLHive
