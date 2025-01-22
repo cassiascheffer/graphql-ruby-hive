@@ -25,11 +25,11 @@ RSpec.describe GraphQLHive::Processor do
   let(:printer) { instance_double(GraphQLHive::Printer) }
   let(:processor) do
     described_class.new(
+      queue: queue,
+      logger: logger,
       buffer_size: buffer_size,
       client: client,
-      sampler: sampler,
-      queue: queue,
-      logger: logger
+      sampler: sampler
     )
   end
   let(:now) { Time.now }
@@ -98,7 +98,7 @@ RSpec.describe GraphQLHive::Processor do
       it "rescues the error, logs it, and empties the buffer" do
         expect(processor.instance_variable_get(:@buffer)).to be_empty
         processor.process_queue
-        expect(logger).to have_received(:error).with(kind_of(StandardError)).twice
+        expect(logger).to have_received(:error).with("Failed to process operation: Test error").twice
         expect(client).not_to have_received(:send)
         expect(processor.instance_variable_get(:@buffer)).to be_empty
       end
